@@ -1116,44 +1116,50 @@ function CatalogPage() {
             ))}
           </div>
         ) : (
-          <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
-            {filteredBooks.map((book) => {
-              const alreadyBorrowed = borrowedBooks.some((item) => item.id === book.id)
+          filteredBooks.length === 0 ? (
+            <p role="status" className="rounded-2xl bg-[#f3f7ff] px-5 py-8 text-center text-slate-600">
+              No books found. Try a different search.
+            </p>
+          ) : (
+            <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+              {filteredBooks.map((book) => {
+                const alreadyBorrowed = borrowedBooks.some((item) => item.id === book.id)
 
-              return (
-                <article key={book.id} className="overflow-hidden rounded-[30px] border border-slate-200 bg-white p-4 shadow-[0_18px_42px_rgba(20,43,74,0.05)]">
-                  <img src={book.cover} alt={book.title} loading="lazy" className="h-72 w-full rounded-[22px] object-cover" />
-                  <div className="mt-5 flex items-center justify-between">
-                    <span className="rounded-full bg-[#f3f7ff] px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-[#356ae6]">{book.category}</span>
-                    <span className={`rounded-full px-2.5 py-1 text-[10px] font-semibold ${book.availability === 'Available' ? 'bg-[#eafaf3] text-[#1d7b5b]' : 'bg-[#fff3e8] text-[#b46a00]'}`}>
-                      {book.availability}
-                    </span>
-                  </div>
-                  <h2 className="mt-4 text-xl font-bold text-[#142b4a]">{book.title}</h2>
-                  <p className="mt-1 text-sm text-slate-500">{book.author}</p>
-                  <div className="mt-5 flex items-center gap-3">
-                    <Link to={`/books/${book.id}`} className="inline-flex flex-1 items-center justify-center gap-2 rounded-full border border-slate-200 bg-white px-4 py-2.5 text-sm font-semibold text-[#142b4a] transition hover:border-[#356ae6] hover:text-[#356ae6]">
-                      View Details
-                    </Link>
-                    {user ? (
-                      <button
-                        type="button"
-                        onClick={() => borrowBook(book)}
-                        disabled={alreadyBorrowed}
-                        className="inline-flex flex-1 items-center justify-center gap-2 rounded-full bg-[#142b4a] px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-[#203a67] disabled:cursor-not-allowed disabled:opacity-60"
-                      >
-                        {alreadyBorrowed ? 'Borrowed' : 'Borrow'}
-                      </button>
-                    ) : (
-                      <Link to="/login" className="inline-flex flex-1 items-center justify-center gap-2 rounded-full bg-[#142b4a] px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-[#203a67]">
-                        Login
+                return (
+                  <article key={book.id} className="overflow-hidden rounded-[30px] border border-slate-200 bg-white p-4 shadow-[0_18px_42px_rgba(20,43,74,0.05)]">
+                    <img src={book.cover} alt={book.title} loading="lazy" className="h-72 w-full rounded-[22px] object-cover" />
+                    <div className="mt-5 flex items-center justify-between">
+                      <span className="rounded-full bg-[#f3f7ff] px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.2em] text-[#356ae6]">{book.category}</span>
+                      <span className={`rounded-full px-2.5 py-1 text-[10px] font-semibold ${book.availability === 'Available' ? 'bg-[#eafaf3] text-[#1d7b5b]' : 'bg-[#fff3e8] text-[#b46a00]'}`}>
+                        {book.availability}
+                      </span>
+                    </div>
+                    <h2 className="mt-4 text-xl font-bold text-[#142b4a]">{book.title}</h2>
+                    <p className="mt-1 text-sm text-slate-500">{book.author}</p>
+                    <div className="mt-5 flex items-center gap-3">
+                      <Link to={`/books/${book.id}`} className="inline-flex flex-1 items-center justify-center gap-2 rounded-full border border-slate-200 bg-white px-4 py-2.5 text-sm font-semibold text-[#142b4a] transition hover:border-[#356ae6] hover:text-[#356ae6]">
+                        View Details
                       </Link>
-                    )}
-                  </div>
-                </article>
-              )
-            })}
-          </div>
+                      {user ? (
+                        <button
+                          type="button"
+                          onClick={() => borrowBook(book)}
+                          disabled={alreadyBorrowed}
+                          className="inline-flex flex-1 items-center justify-center gap-2 rounded-full bg-[#142b4a] px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-[#203a67] disabled:cursor-not-allowed disabled:opacity-60"
+                        >
+                          {alreadyBorrowed ? 'Borrowed' : 'Borrow'}
+                        </button>
+                      ) : (
+                        <Link to="/login" className="inline-flex flex-1 items-center justify-center gap-2 rounded-full bg-[#142b4a] px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-[#203a67]">
+                          Login
+                        </Link>
+                      )}
+                    </div>
+                  </article>
+                )
+              })}
+            </div>
+          )
         )}
       </section>
     </div>
